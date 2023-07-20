@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: test_amocrm
+    working_dir: /var/www/
+    volumes:
+      - ./src:/var/www
+    networks:
+      - test_amocrm-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-test_amocrm
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - test_amocrm-network
+
+networks:
+  test_amocrm-network:
+    driver: bridge
